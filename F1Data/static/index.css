@@ -1,0 +1,325 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #171919;
+}
+body header {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  background-color: rgba(14, 15, 15, 0.8);
+  z-index: 3;
+  border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+}
+body header .logo {
+  position: absolute;
+  height: 100%;
+  margin: 0;
+  align-content: center;
+  top: 50%;
+  left: 10px;
+  transform: translate(0%, -50%);
+  color: #ffffff;
+  font-weight: 900;
+  font-style: italic;
+}
+body header .upcoming-event {
+  color: #ffffff;
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  align-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+body header .upcoming-event .event-label {
+  position: absolute;
+  width: 33.3333333333%;
+  height: 40%;
+  display: flex;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-left: 1px solid rgba(39, 39, 39, 0.8);
+  border-right: 1px solid rgba(39, 39, 39, 0.8);
+  border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 70%;
+  z-index: 2;
+}
+body header .upcoming-event .event-name {
+  position: absolute;
+  width: 33.3333333333%;
+  height: 60%;
+  display: flex;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-left: 1px solid rgba(39, 39, 39, 0.8);
+  border-right: 1px solid rgba(39, 39, 39, 0.8);
+  font-size: 80%;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 1;
+}
+body header .upcoming-event .event-time-remaining {
+  position: absolute;
+  width: 66.6666666667%;
+  height: 60%;
+  display: flex;
+  top: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+}
+body header .upcoming-event .event-time-remaining p {
+  position: relative;
+  top: 0;
+  height: 100%;
+  align-items: center;
+  align-content: center;
+  width: 25%;
+  border-right: 1px solid rgba(39, 39, 39, 0.8);
+}
+body header .upcoming-event .time-labels {
+  position: absolute;
+  width: 66.6666666667%;
+  height: 40%;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+}
+body header .upcoming-event .time-labels p {
+  position: relative;
+  top: 0;
+  height: 100%;
+  align-items: center;
+  align-content: center;
+  width: 25%;
+  border-right: 1px solid rgba(39, 39, 39, 0.8);
+  letter-spacing: 4px;
+  font-size: 70%;
+  border-top: 1px solid rgba(39, 39, 39, 0.8);
+}
+body .event-picker { /* Safari */
+  position: sticky;
+  width: 60%;
+  height: 64px;
+  top: 12px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 44px;
+  border-radius: 6px;
+  border: 1px solid rgba(39, 39, 39, 0.8);
+  background-color: transparent;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  /*
+  .blur {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      background-color: $base-color;
+      backdrop-filter: blur(2px);
+      z-index: -1;
+  }*/
+}
+body .event-picker .labels {
+  position: absolute;
+  width: 100%;
+  height: 24px;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+  display: flex;
+  z-index: 1;
+}
+body .event-picker .labels div {
+  position: relative;
+  color: #ffffff;
+  height: 100%;
+  align-content: center;
+  text-align: center;
+  background-color: rgba(14, 15, 15, 0.8);
+}
+body .event-picker .labels .season, body .event-picker .labels .session {
+  width: 25%;
+}
+body .event-picker .labels .event {
+  width: 50%;
+}
+body .event-picker .labels .event::before {
+  content: "";
+  background: rgba(39, 39, 39, 0.8);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+}
+body .event-picker .labels .event::after {
+  content: "";
+  background-color: rgba(39, 39, 39, 0.8);
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+}
+body .event-picker .lists {
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  border-radius: 0 0 6px 6px;
+  bottom: 0;
+  display: flex;
+}
+body .event-picker .lists div {
+  color: #ffffff;
+  height: 100%;
+  text-align: center;
+}
+body .event-picker .lists .seasons, body .event-picker .lists .session {
+  width: 25%;
+  background-color: rgba(14, 15, 15, 0.8);
+}
+body .event-picker .lists .seasons .active-season {
+  align-content: center;
+}
+body .event-picker .lists .seasons *[class^=season-] {
+  background-color: rgba(14, 15, 15, 0.8);
+  align-content: center;
+  display: none;
+}
+body .event-picker .lists .seasons:hover {
+  cursor: pointer;
+}
+body .event-picker .lists .seasons:hover .active-season:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body .event-picker .lists .seasons:hover *[class^=season-] {
+  display: block;
+}
+body .event-picker .lists .seasons:hover *[class^=season-]:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body .event-picker .lists .event {
+  width: 50%;
+  background-color: rgba(14, 15, 15, 0.8);
+}
+body .event-picker .lists .event .active-event {
+  align-content: center;
+}
+body .event-picker .lists .event *[class^=event-] {
+  background-color: rgba(14, 15, 15, 0.8);
+  align-content: center;
+  display: none;
+}
+body .event-picker .lists .event:hover {
+  cursor: pointer;
+}
+body .event-picker .lists .event:hover .active-event:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body .event-picker .lists .event:hover *[class^=event-] {
+  display: block;
+}
+body .event-picker .lists .event:hover *[class^=event-]:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body .event-picker .lists .event::before {
+  content: "";
+  position: absolute;
+  background-color: rgba(39, 39, 39, 0.8);
+  left: 25%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+}
+body .event-picker .lists .event::after {
+  content: "";
+  background-color: rgba(39, 39, 39, 0.8);
+  position: absolute;
+  right: 25%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+}
+body .event-picker .lists .session .active-session {
+  align-content: center;
+}
+body .event-picker .lists .session *[class^=session-] {
+  background-color: rgba(14, 15, 15, 0.8);
+  align-content: center;
+  display: none;
+}
+body .event-picker .lists .session:hover {
+  cursor: pointer;
+}
+body .event-picker .lists .session:hover .active-session:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body .event-picker .lists .session:hover *[class^=session-] {
+  display: block;
+}
+body .event-picker .lists .session:hover *[class^=session-]:hover {
+  background-color: rgba(39, 39, 39, 0.8);
+}
+body p {
+  color: white;
+}
+body .chart {
+  position: absolute;
+  width: 85%;
+  height: 75%;
+  background-color: black;
+  left: 50%;
+  top: 221px;
+  transform: translate(-50%, 0%);
+  border-radius: 6px;
+}
+body .chart .drivers {
+  width: 100%;
+  height: 42px;
+  border-bottom: 1px solid rgba(39, 39, 39, 0.8);
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+body .chart .drivers div {
+  width: 4.7%;
+  height: 70%;
+  align-self: center;
+  text-align: center;
+  align-content: center;
+  border-radius: 3px;
+}
+body .chart .drivers div:hover {
+  cursor: pointer;
+}/*# sourceMappingURL=index.css.map */

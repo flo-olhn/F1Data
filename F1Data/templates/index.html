@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/index.css">
+    <title>F1Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+
+    <header>
+        <h1 class="logo">F1Data</h1>
+        <div class="upcoming-event">
+            <div class="event-label">upcoming event</div>
+            <div class="event-name">{{ upcoming_event }}</div>
+            <div class="event-time-remaining">
+                <p id="d"></p>
+                <p id="h"></p>
+                <p id="m"></p>
+                <p id="s"></p>
+            </div>
+            <div class="time-labels">
+                <p id="days">DAYS</p>
+                <p id="hours">HOURS</p>
+                <p id="minutes">MINUTES</p>
+                <p id="seconds">SECONDS</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="event-picker">
+        
+        <div class="labels">
+            <div class="season">Season</div>
+            <div class="event">Event</div>
+            <div class="session">Session</div>
+        </div>
+        
+        <div class="lists" id="list">
+            <div class="seasons">
+                <div class="active-season" id="active-season">{{ active_season }}</div>
+
+                {% for s in season: %}
+                    <div id='{{s}}' class="season-{{s}}" onclick="change_season(document.getElementById('{{s}}').innerText)">{{ s }}</div>
+                {% endfor %}
+            </div>
+            <div class="event">
+                <div id="active-event" class="active-event">{{ event }}</div>
+                {% for i in range(0, len):  %}
+                    
+                    <div id='{{events[i]}}' class="event-{{i}}" onclick="change_event(document.getElementById('active-season').innerText, document.getElementById('{{events[i]}}').innerText)">{{ events[i] }}</div>
+                {% endfor %}
+            </div>
+            <div class="session">
+                <div id='active-session' class="active-session">{{ session }}</div>
+                {% for sess in sessions: %}
+                    <div id='{{sess}}' class="session-{{sess}}" onclick="change_session(document.getElementById('active-season').innerText, document.getElementById('active-event').innerText, document.getElementById('{{sess}}').innerText)">{{ sess }}</div>
+                {% endfor %}
+            </div> 
+        </div>
+
+        <div class="blur"></div>
+
+    </div>
+
+    <div class="chart">
+        <div class="drivers">
+            {% for driver in drivers_info: %}
+                <div id="{{ driver }}-{{ drivers.get_driver_color(driver) }}" class="driver">{{ drivers.get_driver_abb(driver) }}</div>
+            {% endfor %}
+        </div>
+        <div class="x_axis">X Axis</div>
+        <div class="y_axis">Y Axis</div>
+    </div>
+
+
+    <script>
+        function change_season(season) {
+            selected_season_id = document.getElementById(season).id;
+            url = "{{ url_for('get_season') }}".concat(selected_season_id);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: "json",
+                data: JSON.stringify({'active_season': selected_season_id, 'driver': '', 'selected': false}),
+                contentType: 'application/json; charset=utf-8',
+                success: window.location.href = url
+            })
+                .done(
+                    document.getElementById('active-season').innerText = season
+                )
+        };
+
+        function change_event(active_season, event) {
+            selected_event = document.getElementById(event).id;
+            url = "{{ url_for('get_season') }}".concat(active_season).concat("{{ url_for('get_event') }}").concat(selected_event);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: "json",
+                data: JSON.stringify({'active_event': selected_event, 'driver': '', 'selected': false}),
+                contentType: 'application/json; charset=utf-8',
+                success: window.location.href = url
+            })
+                .done(
+                    document.getElementById('active-event').innerText = event
+                )
+        };
+
+        function change_session(active_season, event, session) {
+            selected_session = document.getElementById(session).id;
+            url = "{{ url_for('get_season') }}".concat(active_season).concat("{{ url_for('get_event') }}").concat(event).concat("{{ url_for('get_session') }}").concat(session);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data: JSON.stringify({'active_session': selected_session, 'driver': '', 'selected': false}),
+                contentType: 'application/json; charset=utf-8',
+                success: window.location.href = url
+            })
+                .done(
+                    document.getElementById('active-session').innerText = session
+                )
+        };
+
+        function color(driver, color, active_season, active_event, active_session) {
+            var div = document.getElementById(driver+'-'+color);
+            var clicked = false;
+            var selected = false;
+            var url = window.location.href;
+
+            var divMouseEnter = function (e) {
+                div.style.backgroundColor = "#"+color+"3f";
+            }
+
+            var divMouseLeave = function (e) {
+                div.style.backgroundColor = "transparent";
+            }
+
+            var divMouseClick = function (e) {
+                if (clicked == false) {
+                    div.removeEventListener("mouseenter", divMouseEnter, true);
+                    div.removeEventListener("mouseleave", divMouseLeave, true);
+                    div.style.backgroundColor = "#"+color+"6f";
+                    clicked = true;
+                    selected = true;
+                } else {
+                    div.addEventListener("mouseenter", divMouseEnter, true);
+                    div.addEventListener("mouseleave", divMouseLeave, true);
+                    div.style.backgroundColor = "#"+color+"3f";
+                    clicked = false;
+                    selected = false;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: "json",
+                    data: JSON.stringify({'active_season': active_season, 'active_event': active_event, 'active_session': active_session, 'driver': driver, 'selected': selected}),
+                    contentType: 'application/json; charset=utf-8',
+                    success: console.log(driver)
+                })
+                return clicked, selected;
+            }
+            
+            div.addEventListener("mouseenter", divMouseEnter, true);
+            div.addEventListener("mouseleave", divMouseLeave, true);
+            div.addEventListener("click", divMouseClick, true);
+        };
+
+        $(document).ready(function() {
+
+            window.onload=function() {
+                drivers = document.getElementsByClassName("driver");
+                var active_season = document.getElementById('active-season').innerText;
+                var active_event = document.getElementById('active-event').innerText
+                var active_session = document.getElementById('active-session').innerText;
+                for (let i = 0; i < drivers.length; i++) {
+                    const driver = drivers[i];
+                    const splitted = driver.id.toString().split('-');
+                    const driver_nb = driver.id.toString().split('-')[0];
+                    const driver_color = driver.id.toString().split('-')[1];
+                    driver.style.color = '#'+driver_color;
+                    color(driver_nb, driver_color, active_season, active_event, active_session);
+                }
+
+            };
+
+            var race_date = Date.parse('{{ upcoming_race_date }}');
+            function getdate() {
+                
+                var today = new Date();
+                var time_remaining = new Date(race_date - Date.parse(today));
+                var race_day = new Date(race_date).getDate();
+                var d = race_day - today.getDate();
+                if (time_remaining.getHours() > 0) {
+                    var h = time_remaining.getHours()-1;
+                }
+                else { 
+                    var h = time_remaining.getHours()+23;
+                    //d = d-1;
+                }
+                var m = time_remaining.getMinutes();
+                var s = time_remaining.getSeconds();
+                //console.log(new Date(race_date - Date.parse(today)))
+                if (d < 1)  {
+                    d = 0;
+                }
+                if (d < 10) {
+                    d = "0"+d;
+                }
+                if (h < 10) {
+                    h = "0"+h;
+                }
+                if (s < 10) {
+                    s = "0"+s;
+                }
+                if (m < 10) {
+                    m = "0" + m;
+                }
+                //$(".upcoming-event").text(d+" : "+h+" : "+m+" : "+s);
+                $('#d').text(d);
+                $('#h').text(h);
+                $('#m').text(m);
+                $('#s').text(s);
+                
+                setTimeout(function(){getdate()}, 500);
+            }
+            setTimeout(function(){getdate()}, 500);
+        });
+    </script>
+</body>
+</html>
